@@ -5,35 +5,30 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import android.database.sqlite.SQLiteDatabase
+import android.database.Cursor
+import android.util.Log
+
 
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var recyclerNotas: RecyclerView
-    private lateinit var adapter: NotaAdapter
+    private lateinit var db: SQLiteHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        recyclerNotas = findViewById(R.id.recyclerNotas)
-        adapter = NotaAdapter(NotaRepository.listaNotas) { nota ->
-            val intent = Intent(this, DetalhesActivity::class.java)
-            intent.putExtra("nota_id", nota.id)
-            startActivity(intent)
+        db = SQLiteHelper(this)
+
+        // Exemplo: inserir nota
+        db.inserirNota(Nota(titulo = "Teste", conteudo = "Conteúdo de teste"))
+
+        // Exemplo: listar notas
+        val notas = db.listarNotas()
+        for (nota in notas) {
+            Log.d("BANCO", "Nota: ${nota.id} - ${nota.titulo}")
         }
-
-        recyclerNotas.layoutManager = LinearLayoutManager(this)
-        recyclerNotas.adapter = adapter
-
-        findViewById<Button>(R.id.btnNovaNota).setOnClickListener {
-            startActivity(Intent(this, NovaNotaActivity::class.java))
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        adapter.atualizarLista(NotaRepository.listaNotas)
     }
 }
+
 

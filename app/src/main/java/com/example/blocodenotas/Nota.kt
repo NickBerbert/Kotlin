@@ -4,8 +4,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "notas")
 data class Nota(
-    val id: Int,
+    val id: Int? = null, // <- Agora o ID é opcional (null)
     val titulo: String,
     val conteudo: String
 )
+
 
