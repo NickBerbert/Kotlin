@@ -8,5 +8,3 @@ data class Nota(
     val titulo: String,
     val conteudo: String
 )
-
-
